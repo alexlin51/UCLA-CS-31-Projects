@@ -1,0 +1,195 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+#include <sstream> 
+using namespace std;
+
+
+bool isValidUppercaseStateCode(string stateCode1)
+{
+	const string codes =
+		"AL.AK.AZ.AR.CA.CO.CT.DE.DC.FL.GA.GU.HI.ID.IL.IN.IA.KS.KY.LA.ME.MD.MA.MI.MN.MS.MO.MP.MT.NE.NV.NH.NJ.NM.NY.NC.ND.OH.OK.OR.PA.PR.RI.SC.SD.TN.TX.UT.VT.VA.WA.WV.WI.WY";
+	return (stateCode1.size() == 2 && codes.find(stateCode1) != string::npos);
+}
+
+
+bool hasValidSyntax(string orders)
+{
+	// This function should return true if Order follows definition, otherwise return false
+	// What is the definition? a sequence of zero of more state orders, Has to be part of the state list, no spaces
+
+	if (orders == "")
+	{
+		return true;
+	}
+	else
+	{
+		int orderSize = orders.size();
+
+		if (isalpha(orders.at(0)))
+		{
+			if (orders.at(orderSize - 1) == '+' || orders.at(orderSize - 1) == '-')
+			{
+				//cout << "check last" << endl;
+			}
+			else
+			{
+				return false;
+			}
+
+			// I want to check if the first two letters are a state
+			for (int k = 0; orderSize - 2 != k; k++)
+			{
+				//toupper(orders.at(k));
+				bool checkLetter = isalpha(orders.at(k));
+				bool checkNumber = isdigit(orders.at(k));
+				bool checkNextNumb = isalpha(orders.at(k + 1));
+				bool checkNextTwoNumb = isalpha(orders.at(k + 2));
+				if (checkLetter == true || checkNumber == true || orders.at(k) == '+' || orders.at(k) == '-')
+				{
+					if (k > 1)
+					{
+						bool checkNumBefore = isdigit(orders.at(k - 1));
+						bool checkLetterAfter = isalpha(orders.at(k + 1));
+
+						if (k < (orderSize - 1))
+						{
+							// cout << "wwhat" << endl;
+							if (orders.at(k) == '+' || orders.at(k) == '-')
+							{
+								if (checkNumBefore == true && checkLetterAfter == true)
+								{
+									//cout << "worked" << endl;
+								}
+								else
+								{
+									//cout << "check3" << endl;
+									return false;
+								}
+							}
+						}
+					}
+
+					if (k < (orderSize - 3) && checkLetter == true && checkNextNumb == true && checkNextTwoNumb == true)
+					{
+						return false;
+					}
+
+					if (k < (orderSize - 3) && checkLetter == true && checkNextNumb == true && checkNextTwoNumb == false)
+					{
+						//cout << "worked!" << endl;
+
+						string stateCode = "";
+						stateCode.push_back(orders.at(k));
+						stateCode.push_back(orders.at(k + 1));
+						// cout << stateCode << endl;
+
+
+						stateCode.at(0) = toupper(stateCode.at(0));
+						stateCode.at(1) = toupper(stateCode.at(1));
+
+
+						bool stateCheck = isValidUppercaseStateCode(stateCode);
+						if (!stateCheck)
+						{
+							// cout << "check" << endl;
+							return false;
+						}
+					}
+				}
+				else
+				{
+					// cout << "error here" << endl;
+					return false;
+				}
+			}
+			return true;
+
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+}
+
+
+int countCases(string orders, char status, int& caseCount)
+{
+	if (hasValidSyntax(orders))
+	{
+
+		if (status == '+' || status == '-')
+		{
+			string temp = "";
+			int track = 0;
+			int orderSize = orders.size();   //TX32+ 
+			for (int k = 0; k != orderSize; k++)
+			{
+
+				//Write something that scans for a group of numbers and the adds to a separate int value, the compare that number to zero. 
+				bool checkifNumber = isdigit(orders.at(k));
+				if (checkifNumber == true)
+				{
+					temp.push_back(orders.at(k));
+					// cout << temp << endl;
+					bool checkifNumberNext = isdigit(orders.at(k + 1));
+					if (checkifNumberNext == false)
+					{
+						int dcheck;
+						istringstream(temp) >> dcheck;
+						if (isdigit(k + 1) == false)
+						{
+							temp = "";
+						}
+						if (dcheck == 0)
+						{
+
+							return 2;
+						}
+						if (orders.at(k + 1) == status)
+						{
+							track = track + dcheck;
+							caseCount = track;
+						}
+
+					}
+				}
+
+			}
+			return 0;
+		}
+		else
+		{
+			return 3;
+		}
+	}
+	else
+	{
+		return 1;
+	}
+
+}
+
+
+int main()
+{
+	char status = '+';
+	string orders = "ny29+tx10-hi4+";
+	int caseNum = 0;
+	int tfrep = countCases(orders, status, caseNum);
+	bool boo = hasValidSyntax(orders);
+	string boo2 = "";
+	if (boo == true)
+		boo2 = "True";
+	else
+		boo2 = "False";
+
+
+	cout << "Order: " << orders << " returns " << tfrep << endl;
+	cout << "Order: " << orders << " returns " << boo2 << endl;
+	cout << "Order Status " << status << " was 0 and is now " << caseNum << endl;
+}
+
