@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+	//Collection of inputs from user!
+	cout << "Name: ";
+	string name;
+	getline(cin, name);
+	cout << "Taxable income: ";
+	double income;
+	cin >> income;
+	cin.ignore(10000, '\n');
+	cout << "Occupation: ";
+	string job;
+	getline(cin, job);
+	cout << "Number of children: ";
+	int kids;
+	cin >> kids;
+	cout << "---" << endl;
+
+	//Input errors or issues and couts! 
+	if (name.length() == 0)
+	{
+		cout << "You must enter a name";
+	}
+	else if (income < 0)
+	{
+		cout << "The taxable income must be nonnegative";
+	}
+	else if (job.length() == 0)
+	{
+		cout << "You must enter an occupation";
+	}
+	else if (kids < 0)
+	{
+		cout << "The number of children must be nonnegative";
+	}
+
+	//(tax math) I plan to have three situations, 1. <= 50k  2. <= 120k   3. > 120k
+	double taxes;
+	if (income <= 50000)
+	{
+		taxes = income * 0.04;
+	}
+	else if (income > 50000 && income <= 120000)
+	{
+		if (job == "engineer" || job == "scientist")
+		{
+			taxes = (income - 50000) * 0.05 + 2000;
+		}
+		else
+		{
+			taxes = (income - 50000) * 0.06 + 2000;
+		}
+	}
+	else if (income > 120000)
+	{
+		if (job == "engineer" || job == "scientist")
+		{
+			taxes = (income - 120000) * 0.09 + 5500;
+		}
+		else
+		{
+			taxes = (income - 120000) * 0.09 + 6200;
+		}
+	}
+
+	// incorporating the kid discount
+	double kdiscount = 0;
+	if (income < 120000)
+	{
+		kdiscount = kids * 200;
+	}
+
+	//putting it all together
+	cout.setf(ios::fixed);
+	cout.precision(2);
+	double finaltax = taxes - kdiscount;
+	if (finaltax < 0)
+	{
+		cout << name << " would pay $0.00"<< endl;
+	}
+	else
+	{
+		cout << name << " would pay $" << finaltax << endl;
+	}
+	
+}
