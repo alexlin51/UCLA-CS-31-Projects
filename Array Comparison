@@ -1,0 +1,162 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+using namespace std;
+
+int firstDifference(const string a1[], int n1, const string a2[], int n2)
+{
+   
+    if (n1 <= 0 || n2 <= 0)
+    {
+        // if any of the elements are 0, then just return 0 since program shouldn't be able to process. 
+        return 0;
+    }
+    else if (n1 >= n2)
+    {
+        // This means we want to read n2 value as upper end. 
+        for (int i = 0; i != n2; i++)
+        {
+            if (a1[i] != a2[i])
+            {
+                return i;
+            }
+        }
+        return n2;
+    }
+    else if (n2 > n1)
+    {
+        // This means we want to read n1 as the upper end. 
+        for (int i = 0; i != n1; i++)
+        {
+            if (a1[i] != a2[i])
+            {
+                return i;
+            }
+        }
+        return n1;
+    }
+}
+
+
+bool isContainedIn(const string a1[], int n1, const string a2[], int n2)
+{
+    //Writing out the three possible situations for n1 and n2
+    if (n1 <= 0 || n2 <= 0)
+    {
+        return true;
+    }
+    else if (n1 > n2)
+    {
+        // since n1 has to be included in n2 to be true, if n2 is is smaller, this will always be false
+        return false;
+    }
+    else if (n2 >= n1)
+    {
+        int atemp = 0;
+        int count = 0;
+        for (int i = 0; i  != n2; i++)
+        {
+            //cout << "here?" << endl;
+            //cout << i << a1[atemp] << a2[i] << endl;   
+            if (a1[atemp] == a2[i])
+            {
+                count++;
+                int remaindern1 = n1 - atemp - 1;
+                int remaindern2 = n2 - 1 - i;
+                if (remaindern2 < remaindern1)
+                {
+                    return false;
+                }
+
+                
+                // I want to add something here to scan for the future elements
+                // what if i can find way to show that if the last element hasnt been fulfilled?
+
+                atemp++;
+            }
+            
+        }
+        //cout << count << "-" << n1 << endl;
+        if (count == n1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+      
+    }
+}
+
+
+int main()
+{
+    // ALRIGHT SO FIRSTDIFFERENCE WORKS THIS THESE TEST! 
+    // Here are some tests that demonstrate what these functions do.  You may add
+    // more if you wish.
+   /*
+    string colors[6] = { "pink", "blue", "white", "red", "black", "blue" };
+    string hues[5] = { "pink", "blue", "white", "black", "green" };
+    string tint[5] = { "yellow", "blue", "white", "black", "green" };
+    string little1[4] = { "blue", "white", "black", "blue" };
+    string little2[2] = { "red", "white" };
+    string little3[3] = { "blue", "blue", "red" };
+
+    int test1 = firstDifference(colors, 6, hues, 5);  // 3
+    int test2 = firstDifference(colors, 4, hues, 5); // 3 
+    int test3 = firstDifference(colors, 2, hues, 5);  // equal up to where a1 runs out // 2
+    int test4 = firstDifference(colors, 2, hues, 2);  // equal up to where both run out // 2
+    int test5 = firstDifference(colors, 5, hues, 1);  // equal up to where a2 runs out  // 1
+    int test6 = firstDifference(colors, 5, hues, 0);  // equal up to where a2 runs out // 0
+    int test7 = firstDifference(colors, 5, tint, 0);  // equal up to where a2 runs out // 0
+   
+    cout << test1 << endl << test2 << endl << test3 << endl << test4 << endl << test5 << endl << test6 << endl << test7 << endl;
+    */
+    
+    //int t1 = isContainedIn(little1, 4, colors, 6);
+    //int t2 = isContainedIn(little2, 2, colors, 6);
+    //int t3 = isContainedIn(little3, 3, colors, 6);
+    //int t4 = isContainedIn(hues, 3, colors, 3);
+    //int t5 = isContainedIn(hues, 3, colors, 3);
+    //int t6 = isContainedIn(hues, 0, tint, 5);
+    //int t7 = isContainedIn(hues, 0, tint, 0);
+    
+    //cout << t1 << endl << t2 << endl << t3 << endl << t4 << endl << t5 << endl << t6 << endl << t7 << endl;
+
+   /*
+    assert(isContainedIn(little1, 4, colors, 6)); 
+    assert(!isContainedIn(little2, 2, colors, 6)); 
+    assert(!isContainedIn(little3, 3, colors, 6)); 
+    assert(isContainedIn(hues, 3, colors, 3)); 
+    assert(!isContainedIn(hues, 3, colors, 2)); 
+    assert(isContainedIn(hues, 0, tint, 5));
+    assert(isContainedIn(hues, 0, tint, 0)); 
+    cout << "passed test!" << endl;
+    */
+
+
+
+    //FINAL TEST
+    string colors[6] = { "pink", "blue", "white", "red", "black", "blue" };
+    string hues[5] = { "pink", "blue", "white", "black", "green" };
+    string tint[5] = { "yellow", "blue", "white", "black", "green" };
+    assert(firstDifference(colors, 6, hues, 5) == 3);
+    assert(firstDifference(colors, 4, hues, 5) == 3);
+    assert(firstDifference(colors, 2, hues, 5) == 2);  // equal up to where a1 runs out
+    assert(firstDifference(colors, 2, hues, 2) == 2);  // equal up to where both run out
+    assert(firstDifference(colors, 5, hues, 1) == 1);  // equal up to where a2 runs out
+    assert(firstDifference(colors, 5, hues, 0) == 0);  // equal up to where a2 runs out
+    assert(firstDifference(colors, 5, tint, 0) == 0);  // equal up to where a2 runs out
+    string little1[4] = { "blue", "white", "black", "blue" };
+    assert(isContainedIn(little1, 4, colors, 6));
+    string little2[2] = { "red", "white" };
+    assert(!isContainedIn(little2, 2, colors, 6));
+    string little3[3] = { "blue", "blue", "red" };
+    assert(!isContainedIn(little3, 3, colors, 6));
+    assert(isContainedIn(hues, 3, colors, 3));
+    assert(!isContainedIn(hues, 3, colors, 2));
+    assert(isContainedIn(hues, 0, tint, 5));
+    assert(isContainedIn(hues, 0, tint, 0));
+    cout << "All tests succeeded" << endl;
+}
