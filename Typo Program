@@ -1,0 +1,361 @@
+#include <iostream>
+#include <string>
+#include <cassert>
+using namespace std;
+
+
+
+struct testStrings {
+    string swapNext;
+    string swapNext2;
+    string addLetter;
+    string delLetter;
+    string fixLetter;
+};
+
+
+int firstDifference(string word, string compare)
+{
+
+    int word1len = word.size();
+    int word2len = compare.size();
+    //cout << word1len << " " << word2len << " " << compare << endl;
+    if (word1len >= word2len)
+    {
+
+        for (int i = 0; i != word2len; i++)
+        {
+            //cout << "in here?" << endl;
+            if (word.at(i) != compare.at(i))
+            {
+                // cout << "hmmm " << i << " " << word << " " <<compare <<endl;
+                return i;
+            }
+        }
+
+
+        return word2len;
+    }
+    else
+    {
+        for (int i = 0; i != word1len; i++)
+        {
+            //cout << i << endl;
+            if (word.at(i) != compare.at(i))
+            {
+                //cout << "in now" << endl;
+                return i;
+            }
+        }
+        return word1len;
+    }
+
+}
+
+
+//any string functions happen here!
+
+
+string testSwap(string word, string compare)
+{
+    // which string is shorter?
+    int temp1 = word.size();
+    int temp2 = compare.size();
+    int sizeCompared = 0;
+    if (temp1 >= temp2)
+    {
+        sizeCompared = temp2;
+    }
+    else
+    {
+        sizeCompared = temp1;
+    }
+
+
+    // first I need to find location of first difference
+    //cout << "from here?" << endl;
+    int firstDif = firstDifference(word, compare);
+    //cout << firstDif << endl;
+
+    string base;
+    for (int i = 0; i != firstDif; i++)
+    {
+        base.push_back(word.at(i));
+    }
+
+    string adjust;
+    // cout << "abc " << endl;
+    // cout << base.size() << " " << word.size() << endl;
+    if (base.size() == word.size() - 1)
+    {
+        return base;
+    }
+
+    for (int k = firstDif; k != sizeCompared; k++)
+    {
+        adjust.push_back(word.at(k));
+    }
+
+
+
+    string swapNextPart;
+    swapNextPart.push_back(adjust.at(1));
+    swapNextPart.push_back(adjust.at(0));
+    //cout << swapNextPart << endl;
+    if (firstDif <= sizeCompared - 2)
+    {
+        //cout << "here?" << endl;
+        for (int i = firstDif + 2; i != sizeCompared; i++)
+        {
+            swapNextPart.push_back(word.at(i));
+        }
+    }
+
+    // cout << "here" << endl;
+    string swap1 = base + swapNextPart;
+    //cout << swap1 << " " << word;
+    return swap1;
+}
+
+
+string FixLetter(string word, string compare)
+{
+    // which string is shorter?
+    int temp1 = word.size();
+    int temp2 = compare.size();
+    int sizeCompared = 0;
+    if (temp1 >= temp2)
+    {
+        sizeCompared = temp2;
+    }
+    else
+    {
+        sizeCompared = temp1;
+    }
+
+
+    // first I need to find location of first difference
+    //cout << "HERHE" << endl;
+
+    int firstDif = firstDifference(word, compare);
+
+    //cout << "wait what? " <<firstDif <<endl;
+    string base;
+    for (int i = 0; i != firstDif; i++)
+    {
+        base.push_back(word.at(i));
+    }
+
+    string adjust;
+    for (int k = firstDif; k != sizeCompared; k++)
+    {
+        adjust.push_back(word.at(k));
+    }
+
+
+    string fixLetterNext;
+    fixLetterNext.push_back(compare.at(firstDif));
+    for (int i = firstDif + 1; i != sizeCompared; i++)
+    {
+        fixLetterNext.push_back(word.at(i));
+    }
+    string fixed = base + fixLetterNext;
+
+    return fixed;
+}
+
+string addLetter(string word, string compare)
+{
+    //cout << "Inputs to add Letter :" << word << " " << compare << endl;
+    // which string is shorter?
+    int temp1 = word.size();
+    int temp2 = compare.size();
+    int sizeCompared = 0;
+    if (temp1 >= temp2)
+    {
+        sizeCompared = temp2;
+    }
+    else
+    {
+        sizeCompared = temp1;
+    }
+
+
+    // first I need to find location of first difference
+
+    int firstDif = firstDifference(word, compare);
+    //cout << firstDif << endl;
+    string base;
+    for (int i = 0; i != firstDif; i++)
+    {
+        base.push_back(word.at(i));
+    }
+
+    string adjust;
+    for (int k = firstDif; k != sizeCompared; k++)
+    {
+        adjust.push_back(word.at(k));
+    }
+
+    //cout << base << " + " << adjust << endl;
+
+    string addLetterNext;
+    addLetterNext.push_back(compare.at(firstDif));
+    for (int i = firstDif; i != sizeCompared; i++)
+    {
+        addLetterNext.push_back(word.at(i));
+    }
+    string addLetter = base + addLetterNext;
+
+    return addLetter;
+}
+
+string delLetter(string word, string compare)
+{
+    // which string is shorter?
+    int temp1 = word.size();
+    int temp2 = compare.size();
+    int sizeCompared = 0;
+    if (temp1 >= temp2)
+    {
+        sizeCompared = temp2;
+    }
+    else
+    {
+        sizeCompared = temp1;
+    }
+
+
+    // first I need to find location of first difference
+
+    int firstDif = firstDifference(word, compare);
+    //cout << firstDif << endl;
+    string base;
+    for (int i = 0; i != firstDif; i++)
+    {
+        base.push_back(word.at(i));
+    }
+
+    string adjust;
+    for (int k = firstDif; k != sizeCompared + 1; k++)
+    {
+        adjust.push_back(word.at(k));
+    }
+
+    string delLetterNext;
+    for (int i = firstDif + 1; i != sizeCompared + 1; i++)
+    {
+        delLetterNext.push_back(word.at(i));
+    }
+    string delChar = base + delLetterNext;
+
+    return delChar;
+}
+
+
+int scoreTypo(const string dictionary[], int n, string word)
+{
+    // I want to code the basic (-1) return for n
+    if (n <= 0)
+    {
+        return -1;
+    }
+
+    // Coding to return for correct spelling
+    for (int i = 0; i != n; i++)
+    {
+        if (word == dictionary[i])
+        {
+            //cout << word << " " << dictionary[i] << endl;
+            return 0;
+        }
+    }
+
+    for (int k = 0; k != n; k++)
+    {
+        // creation of first filter of length.
+        int stringSize = word.size();
+
+        if (stringSize == dictionary[k].size() || stringSize == (dictionary[k].size() + 1) || stringSize == (dictionary[k].size() - 1))
+        {
+            // okay we have three situations. one where the string is the same size, where +1 size, and where -1 size
+            if (stringSize == dictionary[k].size())
+            {
+                string test = testSwap(word, dictionary[k]);
+
+                if (dictionary[k] == test)
+                {
+                    return 1;
+                }
+
+                string test2 = FixLetter(word, dictionary[k]);
+                //cout << test2 << " = " << dictionary[k] << endl;
+                if (test2 == dictionary[k])
+                {
+                    //cout << "Testing : " << test2 << " and " << dictionary[k] << endl;
+                    return 1;
+                }
+
+            }
+            if (stringSize == dictionary[k].size() - 1)
+            {
+                //cout << stringSize << endl;
+                string test3 = addLetter(word, dictionary[k]);
+                //cout << test3 << " " << dictionary[k] << endl;
+
+                if (test3 == dictionary[k])
+                {
+                    // cout << "in here? " << endl;
+                    return 1;
+                }
+
+            }
+            if (stringSize == dictionary[k].size() + 1)
+            {
+                //cout << word << " " << dictionary[k] << endl;
+                string test4 = delLetter(word, dictionary[k]);
+                // cout << test4 << " = " << word << endl;
+
+                if (dictionary[k] == test4)
+                {
+                    //cout << "worked: " << test4 << " " << dictionary[k] << endl;
+                    return 1;
+                }
+            }
+        }
+
+    }
+    return 2;
+}
+
+int main()
+{
+
+    //string test = delLetter("tacocs", "tacos");
+    //cout << test << endl;
+
+    // Here are some tests.  You may add more if you wish.
+    string dict1[6] = { "february", "pointer", "country", "forty", "conversation", "minuscule" };
+    assert(scoreTypo(dict1, 0, "forty") == -1);
+    assert(scoreTypo(dict1, -3, "forty") == -1);
+    assert(scoreTypo(dict1, 6, "conversation") == 0);
+    assert(scoreTypo(dict1, 6, "forty") == 0);
+    assert(scoreTypo(dict1, 3, "country") == 0);
+    assert(scoreTypo(dict1, 6, "fourty") == 1);
+    assert(scoreTypo(dict1, 6, "febuary") == 1);
+    assert(scoreTypo(dict1, 6, "february") == 0);
+    assert(scoreTypo(dict1, 6, "miniscule") == 1);
+    assert(scoreTypo(dict1, 6, "poitner") == 1);
+    assert(scoreTypo(dict1, 6, "poiter") == 1);
+    assert(scoreTypo(dict1, 6, "ointer") == 1);
+    assert(scoreTypo(dict1, 6, "pointe") == 1);
+    assert(scoreTypo(dict1, 6, "opinter") == 1);
+    assert(scoreTypo(dict1, 6, "pointre") == 1);
+    assert(scoreTypo(dict1, 6, "ppointer") == 1);
+    assert(scoreTypo(dict1, 6, "pointerr") == 1);
+    assert(scoreTypo(dict1, 6, "lointer") == 1);
+    assert(scoreTypo(dict1, 6, "pointex") == 1);
+    assert(scoreTypo(dict1, 6, "conservation") == 2);
+    assert(scoreTypo(dict1, 2, "country") == 2);
+    cout << "All tests succeeded" << endl;
+}
